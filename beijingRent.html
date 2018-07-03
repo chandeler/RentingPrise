@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+  
+  <head>
+    <meta charset="gb2312">
+  </head>
+  
+  <body style="height: 100%; margin: 0">
+    <div id="main" style="height: 100%">
+    </div>
+    <script type="text/javascript" src="jquery.min.js">
+    </script>
+    <script type="text/javascript" src="echarts.js">
+    </script>
+    <script type="text/javascript">
+      var myChart = echarts.init(document.getElementById('main'));
+      myChart.showLoading();
+
+      //地图文件来源于：http://echarts.baidu.com/data/asset/geo/HK.json 
+      $.get('beijing.json',
+      function(geoJson) {
+
+        myChart.hideLoading();
+
+        echarts.registerMap('beijing', geoJson);
+
+        myChart.setOption(option = {
+          title: {
+            text: '北京租房平均价格 （2017-2018）',
+            subtext: '数据来自自如租房网',
+            sublink: 'http://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E8%A1%8C%E6%94%BF%E5%8D%80%E5%8A%83#cite_note-12'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: '{b}<br/>{c} (元/ 人)'
+          },
+          toolbox: {
+            show: true,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            feature: {
+              dataView: {
+                readOnly: false
+              },
+              restore: {},
+              saveAsImage: {}
+            }
+          },
+          visualMap: {
+            min: 1500,
+            max: 5000,
+            text: ['High', 'Low'],
+            realtime: false,
+            calculable: true,
+            color: ['orangered', 'yellow', 'lightskyblue']
+          },
+          series: [{
+            name: '北京租房均价',
+            type: 'map',
+            mapType: 'beijing',
+            // 自定义扩展图表类型
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true
+                }
+              },
+              emphasis: {
+                label: {
+                  show: true
+                }
+              }
+            },
+            data: [{
+              name: '西城区',
+              value: 6169.34
+            },
+            {
+              name: '东城区',
+              value: 6293.48
+            },
+            {
+              name: '朝阳区',
+              value: 6146.1
+            },
+            {
+              name: '海淀区',
+              value: 6120.56
+            },
+            {
+              name: '丰台区',
+              value: 5049.02
+            },
+            {
+              name: '石景山区',
+              value: 4877.64
+            },
+            {
+              name: '亦庄区',
+              value: 4473.78
+            },
+            {
+              name: '昌平区',
+              value: 4736.97
+            },
+            {
+              name: '平谷区',
+              value: 3515.54
+            },
+            {
+              name: '通州区',
+              value: 3947.80
+            },
+            {
+              name: '大兴区',
+              value: 4193.75
+            },
+            {
+              name: '顺义区',
+              value: 3737.00
+            },
+            {
+              name: '门头沟区',
+              value: 3399.0
+            },
+            {
+              name: '房山区',
+              value: 3292.00
+            },
+            {
+              name: '延庆县',
+              value: 3191.98
+            },
+            {
+              name: '密云县',
+              value: 3150.94
+            },
+		{
+              name: '怀柔区',
+              value: 3118.94
+            },
+
+                        ],
+            // 自定义名称映射
+            /*nameMap: {
+              'Central and Western': '中西区',
+              'Eastern': '东区',
+              'Islands': '离岛',
+              'Kowloon City': '九龙城',
+              'Kwai Tsing': '葵青',
+              'Kwun Tong': '观塘',
+              'North': '北区',
+              'Sai Kung': '西贡',
+              'Sha Tin': '沙田',
+              'Sham Shui Po': '深水埗',
+              'Southern': '南区',
+              'Tai Po': '大埔',
+              'Tsuen Wan': '荃湾',
+              'Tuen Mun': '屯门',
+              'Wan Chai': '湾仔',
+              'Wong Tai Sin': '黄大仙',
+              'Yau Tsim Mong': '油尖旺',
+              'Yuen Long': '元朗'
+            }*/
+          }]
+        });
+      });
+      //myChart.setOption(option,true); //多余的
+      
+    </script>
+  </body>
+
+</html>
+
+

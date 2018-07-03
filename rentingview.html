@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+    <script src="jquery.min.js" type="text/javascript"></script>
+    <script src="echarts.js"></script>
+    <script src="bootstrap.js"></script>
+    <script src=></script>
+</head>
+<body>
+<div class="navbar navbar-default" role="navigation">
+  <!-- 屏幕宽度小于768px时，div.navbar-responsive-collapse容器里的内容都会隐藏，显示icon-bar图标，当点击icon-bar图标时，再展开。屏幕大于768px时，默认显示。 -->
+  <div class="collapse navbar-collapse navbar-responsive-collapse" style="background:"RGB(243,243,243)">
+        <center>北京市租房数据分析</center>
+                
+        
+  </div>
+</div>
+
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2" style="background-color:RGB(248,248,248);margin-right:40px;">
+        
+        <div id = "div1" class="myinfo64 white" style="border-top:0px;"><p><a><i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人均每月房租花销
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-right"></i></a></p></div>
+        <div id = "div2" class="myinfo64 white"><p><a><i class="fa fa-sign-out"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;整租平均每月租金
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-right"></i></a></p></div>
+        <div id = "div3" class="myinfo64 white"><p><a><i class="fa fa-folder"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合租平均每月租金
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-right"></i></a></p></div>
+        <div id = "div4" class="myinfo64 white"><p><a><i class="fa fa-money "></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;房源价格分布
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-right"></i></a></p></div>
+       <div id = "div5" class="myinfo64 white"><p><a><i class="fa fa-credit-card"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地铁沿线租房均价
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-right"></i></a></p></div>
+        <div id = "div6" class="myinfo64 white"><p><a><i class="fa fa-transgender"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月度供给变化
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-right"></i></a></p></div>
+        <div id = "div7" class="myinfo64 white"><p><a><i class="fa fa-book"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;租房方式
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-right"></i></a></p></div>
+        <div id = "div8" class="myinfo64 white"><p><a><i class="fa fa-child"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;朝向偏好
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-right"></i></a></p></div>
+        
+    </div>
+    <div class="col-lg-9" style="background-color:RGB(248,248,248)">
+        <div id="main0" style="width:940px;height:480px;"></div>
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    function f1(){
+        myclear()
+        // 基于准备好的dom，初始化echarts实例
+         var myChart = echarts.init(document.getElementById('main'+mainId));
+      myChart.showLoading();
+
+      //µØÍ¼ÎÄ¼þÀ´Ô´ÓÚ£ºhttp://echarts.baidu.com/data/asset/geo/HK.json 
+      $.get('beijing.json',
+      function(geoJson) {
+
+        myChart.hideLoading();
+
+        echarts.registerMap('beijing', geoJson);
+
+        myChart.setOption(option = {
+          title: {
+            text: '北京市租房数据分析',
+            subtext: '数据来源：自如网',
+            sublink: 'http://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E8%A1%8C%E6%94%BF%E5%8D%80%E5%8A%83#cite_note-12'
+          },
+         tooltip: {
+            trigger: 'item',
+            formatter: '{b}<br/>{c} (元/ 人)'
+          },
+          toolbox: {
+            show: true,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            feature: {
+              dataView: {
+                readOnly: false
+              },
+              restore: {},
+              saveAsImage: {}
+            }
+          },
+          visualMap: {
+            min: 1500,
+            max: 5000,
+            text: ['High', 'Low'],
+            realtime: false,
+            calculable: true,
+            color: ['orangered', 'yellow', 'lightskyblue']
+          },
+          series: [{
+            name: '北京租房均价',
+            type: 'map',
+            mapType: 'beijing',
+            // 自定义扩展图表类型
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true
+                }
+              },
+              emphasis: {
+                label: {
+                  show: true
+                }
+              }
+            },
+            data: [{
+              name: '西城区',
+              value: 4808.34
+            },
+            {
+              name: '东城区',
+              value: 4554.48
+            },
+            {
+              name: '朝阳区',
+              value: 4143.1
+            },
+            {
+              name: '海淀区',
+              value: 4017.56
+            },
+            {
+              name: '丰台区',
+              value: 3256.02
+            },
+            {
+              name: '石景山区',
+              value: 3110.64
+            },
+            {
+              name: '亦庄区',
+              value: 2875.78
+            },
+            {
+              name: '昌平区',
+              value: 2515.97
+            },
+            {
+              name: '平谷区',
+              value: 2515.54
+            },
+            {
+              name: '通州区',
+              value: 2466.80
+            },
+            {
+              name: '大兴区',
+              value: 2393.75
+            },
+            {
+              name: '顺义区',
+              value: 2098.00
+            },
+            {
+              name: '门头沟区',
+              value: 2098
+            },
+            {
+              name: '房山区',
+              value: 1853.00
+            },
+            {
+              name: '延庆县',
+              value: 1803.98
+            },
+            {
+              name: '密云县',
+              value: 1798.94
+            },
+		{
+              name: '怀柔区',
+              value: 2188.94
+            },
+
+                        ],
+            // 自定义名称映射
+            /*nameMap: {
+              'Central and Western': '中西区',
+              'Eastern': '东区',
+              'Islands': '离岛',
+              'Kowloon City': '九龙城',
+              'Kwai Tsing': '葵青',
+              'Kwun Tong': '观塘',
+              'North': '北区',
+              'Sai Kung': '西贡',
+              'Sha Tin': '沙田',
+              'Sham Shui Po': '深水埗',
+              'Southern': '南区',
+              'Tai Po': '大埔',
+              'Tsuen Wan': '荃湾',
+              'Tuen Mun': '屯门',
+              'Wan Chai': '湾仔',
+              'Wong Tai Sin': '黄大仙',
+              'Yau Tsim Mong': '油尖旺',
+              'Yuen Long': '元朗'
+            }*/
+          }]
+        });
+      });
+}
+    </script>
+    <script type="text/javascript">
+    function f2(){
+        myclear();
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'+mainId));
+
+        
+      myChart.showLoading();
+
+      //地图文件来源于：http://echarts.baidu.com/data/asset/geo/HK.json 
+      $.get('beijing.json',
+      function(geoJson) {
+
+        myChart.hideLoading();
+
+        echarts.registerMap('beijing', geoJson);
+
+        myChart.setOption(option = {
+          title: {
+            text: '北京整租平均价格 （2017-2018）',
+            subtext: '数据来自自如租房网',
+            sublink: 'http://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E8%A1%8C%E6%94%BF%E5%8D%80%E5%8A%83#cite_note-12'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: '{b}<br/>{c} (元/ 人)'
+          },
+          toolbox: {
+            show: true,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            feature: {
+              dataView: {
+                readOnly: false
+              },
+              restore: {},
+              saveAsImage: {}
+            }
+          },
+          visualMap: {
+            min: 1500,
+            max: 5000,
+            text: ['High', 'Low'],
+            realtime: false,
+            calculable: true,
+            color: ['orangered', 'yellow', 'lightskyblue']
+          },
+          series: [{
+            name: '北京租房均价',
+            type: 'map',
+            mapType: 'beijing',
+            // 自定义扩展图表类型
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true
+                }
+              },
+              emphasis: {
+                label: {
+                  show: true
+                }
+              }
+            },
+            data: [{
+              name: '西城区',
+              value: 6169.34
+            },
+            {
+              name: '东城区',
+              value: 6293.48
+            },
+            {
+              name: '朝阳区',
+              value: 6146.1
+            },
+            {
+              name: '海淀区',
+              value: 6120.56
+            },
+            {
+              name: '丰台区',
+              value: 5049.02
+            },
+            {
+              name: '石景山区',
+              value: 4877.64
+            },
+            {
+              name: '亦庄区',
+              value: 4473.78
+            },
+            {
+              name: '昌平区',
+              value: 4736.97
+            },
+            {
+              name: '平谷区',
+              value: 3515.54
+            },
+            {
+              name: '通州区',
+              value: 3947.80
+            },
+            {
+              name: '大兴区',
+              value: 4193.75
+            },
+            {
+              name: '顺义区',
+              value: 3737.00
+            },
+            {
+              name: '门头沟区',
+              value: 3399.0
+            },
+            {
+              name: '房山区',
+              value: 3292.00
+            },
+            {
+              name: '延庆县',
+              value: 3191.98
+            },
+            {
+              name: '密云县',
+              value: 3150.94
+            },
+		{
+              name: '怀柔区',
+              value: 3118.94
+            },
+
+                        ],
+            // 自定义名称映射
+            /*nameMap: {
+              'Central and Western': '中西区',
+              'Eastern': '东区',
+              'Islands': '离岛',
+              'Kowloon City': '九龙城',
+              'Kwai Tsing': '葵青',
+              'Kwun Tong': '观塘',
+              'North': '北区',
+              'Sai Kung': '西贡',
+              'Sha Tin': '沙田',
+              'Sham Shui Po': '深水埗',
+              'Southern': '南区',
+              'Tai Po': '大埔',
+              'Tsuen Wan': '荃湾',
+              'Tuen Mun': '屯门',
+              'Wan Chai': '湾仔',
+              'Wong Tai Sin': '黄大仙',
+              'Yau Tsim Mong': '油尖旺',
+              'Yuen Long': '元朗'
+            }*/
+          }]
+        });
+      });
+
+}
+    </script>
+
+        </script>
+    <script type="text/javascript">
+    function f3(){
+        myclear();
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'+mainId));
+
+        
+      myChart.showLoading();
+
+      //地图文件来源于：http://echarts.baidu.com/data/asset/geo/HK.json 
+      $.get('beijing.json',
+      function(geoJson) {
+
+        myChart.hideLoading();
+
+        echarts.registerMap('beijing', geoJson);
+
+        myChart.setOption(option = {
+          title: {
+            text: '北京租平均价格 （2017-2018）',
+            subtext: '数据来源头：自如网',
+            sublink: 'http://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E8%A1%8C%E6%94%BF%E5%8D%80%E5%8A%83#cite_note-12'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: '{b}<br/>{c} (元/ 人)'
+          },
+          toolbox: {
+            show: true,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            feature: {
+              dataView: {
+                readOnly: false
+              },
+              restore: {},
+              saveAsImage: {}
+            }
+          },
+          visualMap: {
+            min: 1500,
+            max: 5000,
+            text: ['High', 'Low'],
+            realtime: false,
+            calculable: true,
+            color: ['orangered', 'yellow', 'lightskyblue']
+          },
+          series: [{
+            name: '北京租房均价',
+            type: 'map',
+            mapType: 'beijing',
+            // 自定义扩展图表类型
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true
+                }
+              },
+              emphasis: {
+                label: {
+                  show: true
+                }
+              }
+            },
+            data: [{
+              name: '西城区',
+              value: 2938
+            },
+            {
+              name: '东城区',
+              value: 2939.48
+            },
+            {
+              name: '朝阳区',
+              value: 2811.1
+            },
+            {
+              name: '海淀区',
+              value: 2744.56
+            },
+            {
+              name: '丰台区',
+              value: 2398.02
+            },
+            {
+              name: '石景山区',
+              value: 2146.64
+            },
+            {
+              name: '亦庄区',
+              value: 2151.78
+            },
+            {
+              name: '昌平区',
+              value: 2195.97
+            },
+            {
+              name: '平谷区',
+              value: 1200.54
+            },
+            {
+              name: '通州区',
+              value: 1861.80
+            },
+            {
+              name: '大兴区',
+              value: 1856.75
+            },
+            {
+              name: '顺义区',
+              value: 1796.00
+            },
+            {
+              name: '门头沟区',
+              value: 1654.0
+            },
+            {
+              name: '房山区',
+              value: 1476.00
+            },
+            {
+              name: '延庆县',
+              value: 1200.98
+            },
+            {
+              name: '密云县',
+              value: 1234.94
+            },
+		{
+              name: '怀柔区',
+              value: 1200.94
+            },
+
+                        ],
+            // 自定义名称映射
+            /*nameMap: {
+              'Central and Western': '中西区',
+              'Eastern': '东区',
+              'Islands': '离岛',
+              'Kowloon City': '九龙城',
+              'Kwai Tsing': '葵青',
+              'Kwun Tong': '观塘',
+              'North': '北区',
+              'Sai Kung': '西贡',
+              'Sha Tin': '沙田',
+              'Sham Shui Po': '深水埗',
+              'Southern': '南区',
+              'Tai Po': '大埔',
+              'Tsuen Wan': '荃湾',
+              'Tuen Mun': '屯门',
+              'Wan Chai': '湾仔',
+              'Wong Tai Sin': '黄大仙',
+              'Yau Tsim Mong': '油尖旺',
+              'Yuen Long': '元朗'
+            }*/
+          }]
+        });
+      });
+
+}
+    </script>
+    <script type="text/javascript">
+    function f4(){
+        myclear();
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'+mainId));
+
+         option = {
+            title : {
+                subtext: '房源数'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['房价']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    data : ['0-1000','1000-2000','2000-3000','3000-4000','4000-5000','5000-6000','6000以上']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'房源数',
+                    type:'bar',
+                    data:[1594,14612,27460,12644,6276,7867,9523],
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name: '平均值'}
+                        ]
+                    }
+                }
+            ]
+        };
+
+        myChart.setOption(option);
+    }
+    </script>
+    <script type="text/javascript">
+        function f5(){
+            myclear();
+	var myChart = echarts.init(document.getElementById('main'+mainId));
+
+        option = {
+            title: {
+                subtext: ''
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            legend: {
+                data: ['沿线均价']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                boundaryGap: [0, 0.1]
+            },
+            yAxis: {
+                type: 'category',
+                data: [﻿'10号线','13号线','14号线','15号线','16号线','1号线','2号线','4号线','5号线','6号线','7号线','8号线','9号线','亦庄线','八通线','房山线','昌平线','机场线']
+            },
+            series: [
+                {
+                    name: '沿线均价',
+                    type: 'bar',
+                    data: [4087,3698,4048,3245,2773,3689,5042,3401,3344,3462,4193,2978,3523,2633,2863,1997,2191,4627]
+                }
+            ]
+        };
+
+        myChart.setOption(option);
+}
+     function f6(){
+        myclear()
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'+mainId));
+
+        // 指定图表的配置项和数据
+        option = {
+            title: {
+                title: "2017年",
+                subtext: ''
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['房源数量']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    dataView: {readOnly: false},
+                    magicType: {type: ['line', 'bar']},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            xAxis:  {
+                type: 'category',
+                boundaryGap: false,
+                data: [1,2,3,4,5,6,7,8,9,10,11,12]
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value}元'
+                }
+            },
+            series: [
+                {
+                    name:'房源数量',
+                    type:'line',
+                    data:[7003,6963,8569,8789,8893,10233,10973,11033,9015,9300,8712,7536],
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                            {type: 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'},
+                             [{
+                                symbol: 'none',
+                                x: '90%',
+                                yAxis: 'max'
+                            }, {
+                                symbol: 'circle',
+                                label: {
+                                    normal: {
+                                        position: 'start',
+                                        formatter: '最大值'
+                                    }
+                                },
+                                type: 'max',
+                                name: '最高点'
+                            }]
+                        ]
+                    }
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+function f7(){
+    myclear();
+        var myChart = echarts.init(document.getElementById('main'+mainId));
+
+        option = {
+            title : {
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['友家合租','业主直租','自如整租']
+            },
+            series : [
+                {
+                    name: '房源来源',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:[
+                        {value:6490, name:'友家合租'},
+                        {value:54421, name:'业主直租'},
+                        {value:21348, name:'自如整租'},
+                        
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+
+        myChart.setOption(option);
+}
+
+function f8(){
+    myclear();
+    var myChart = echarts.init(document.getElementById('main'+mainId));
+
+        option = {
+            title: {
+                text: '基础雷达图'
+            },
+            tooltip: {},
+            legend: {
+                data: ['房屋朝向']
+            },
+            radar: {
+                // shape: 'circle',
+                indicator: [
+                   { name: '朝南', max: 15000},
+                   { name: '朝东南', max: 15000},
+                   { name: '朝东', max: 15000},
+                   { name: '朝东北', max: 15000},
+                   { name: '朝北', max: 15000},
+                   { name: '朝西北', max: 15000},
+                   { name: '朝西', max: 15000},
+                   { name: '朝西北', max: 15000}
+                ]
+            },
+            series: [{
+                name: '男生 vs 女生',
+                type: 'radar',
+                // areaStyle: {normal: {}},
+                data : [
+                    {
+                        value : [14070, 10028, 12008, 9532, 7889, 6432,8776,7899],
+                        name : '房屋朝向'
+                    }
+                ]
+            }]
+        };
+
+        myChart.setOption(option);
+    
+}
+
+
+    </script>
+    <script type="text/javascript">
+    debugger
+        function myclear(){
+            debugger
+            var html = "<div id=\"main" + (mainId + 1) + "\"style=\"width:940px;height:480px;\"></div>"
+            $("#"+getMainId()).remove()
+            $(".col-lg-9").append(html)
+            mainId = mainId + 1
+         }
+         function getMainId(){
+            return "main" + mainId
+         }
+    </script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#div1").click(function(){
+            f1()
+        });
+    });
+    $(document).ready(function(){
+        $("#div2").click(function(){
+            f2()
+        });
+    });
+    $(document).ready(function(){
+        $("#div3").click(function(){
+            f3()
+        });
+    });
+    $(document).ready(function(){
+        $("#div4").click(function(){
+            f4()
+        });
+    });
+    $(document).ready(function(){
+        $("#div5").click(function(){
+            f5()
+        });
+    });
+    $(document).ready(function(){
+        $("#div6").click(function(){
+            f6()
+        });
+    });
+    $(document).ready(function(){
+        $("#div7").click(function(){
+            f7()
+        });
+    });
+    $(document).ready(function(){
+        $("#div8").click(function(){
+            f8()
+        });
+    });
+      $(document).ready(function(){
+        $("#div9").click(function(){
+            f9()
+        });
+    });
+        var mainId = 0;
+        f1();
+    </script>
+</body>
+</html>
